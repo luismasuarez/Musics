@@ -9,19 +9,6 @@ type TSongItemProps = {
 	track: ListRenderItemInfo<Asset>
 }
 
-//  {
-//     "mediaType": "audio",
-//     "modificationTime": 1704846341000,
-//     "uri": "file:///storage/emulated/0/Music/OhMyBass/Feverkin - Sinking.mp3",
-//     "filename": "Feverkin - Sinking.mp3",
-//     "width": 0,
-//     "id": "1000031618",
-//     "creationTime": 0,
-//     "albumId": "1622371752",
-//     "height": 0,
-//     "duration": 237.087
-//   }
-
 const SongItem = ({ track }: TSongItemProps) => {
 	return (
 		<Pressable
@@ -35,7 +22,7 @@ const SongItem = ({ track }: TSongItemProps) => {
 					display: 'flex',
 					justifyContent: 'center',
 					alignItems: 'center',
-					backgroundColor: COLORS.secondary,
+					backgroundColor: COLORS.secondary_accent,
 					width: 54,
 					height: 54,
 					borderRadius: SIZES.radius,

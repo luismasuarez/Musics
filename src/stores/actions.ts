@@ -12,4 +12,9 @@ export type ISetMusicAssets = {
 	payload: Asset[]
 }
 
-export type TAction = ISetPlayingSong | ISetMusicAssets
+export type ISetCurrentTrack = {
+	type: types.SET_CURRENT_TRACK
+	payload: Asset
+}
+
+export type TAction = ISetPlayingSong | ISetMusicAssets | ISetCurrentTrack
