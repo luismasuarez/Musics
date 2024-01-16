@@ -1,64 +1,60 @@
-import { AntDesign, Ionicons, Entypo } from '@expo/vector-icons'
+import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons'
 import { Asset } from 'expo-media-library'
-import { ListRenderItemInfo, Pressable, View } from 'react-native'
+import { Pressable } from 'react-native'
 
+import Block from './Block'
 import Text from './Text'
-import { COLORS, SIZES } from '../constants'
+import useTheme from '../hooks/useTheme'
 
 type TSongItemProps = {
-	track: ListRenderItemInfo<Asset>
+	song: Asset
 }
 
-const SongItem = ({ track }: TSongItemProps) => {
+const SongItem = ({ song }: TSongItemProps) => {
+	const { colors, sizes } = useTheme()
 	return (
 		<Pressable
 			style={{
 				flexDirection: 'row',
 				alignItems: 'center',
-				padding: SIZES.base,
+				padding: sizes.padding,
+				marginHorizontal: sizes.base,
+				marginVertical: sizes.radius,
+				backgroundColor: colors.pl_container,
+				borderRadius: 13,
 			}}>
-			<View
-				style={{
-					display: 'flex',
-					justifyContent: 'center',
-					alignItems: 'center',
-					backgroundColor: COLORS.secondary_accent,
-					width: 54,
-					height: 54,
-					borderRadius: SIZES.radius,
-				}}>
-				<Ionicons name='musical-note' size={SIZES.h3} color={COLORS.text} />
-			</View>
+			<Block
+				justifyContent='center'
+				alignItems='center'
+				color={colors.pl_primary}
+				width={40}
+				height={40}
+				radius={sizes.radius}>
+				<Ionicons name='musical-note' size={sizes.h3} color={colors.text} />
+			</Block>
 
-			<View style={{ marginLeft: SIZES.base, flex: 1 }}>
+			<Block ml={sizes.base} flex={1}>
 				<Text
 					style={{
 						fontWeight: 'bold',
-						fontSize: SIZES.p,
-						color: COLORS.ligth,
+						fontSize: sizes.p,
+						color: colors.ligth,
 					}}>
-					{track.item.filename}
+					{song.filename}
 				</Text>
+			</Block>
 
-				<Text style={{ fontSize: SIZES.p, color: COLORS.accent, marginTop: 4 }}>
-					{track.item.duration}
-				</Text>
-			</View>
-
-			<View
+			<Block
+				row
 				style={{
 					flexDirection: 'row',
 					alignItems: 'center',
 					gap: 7,
-					marginHorizontal: SIZES.base,
+					marginHorizontal: sizes.base,
 				}}>
-				<AntDesign name='heart' size={SIZES.h4} color={COLORS.primary_accent} />
-				<Entypo
-					name='dots-three-vertical'
-					size={SIZES.h4}
-					color={COLORS.ligth}
-				/>
-			</View>
+				<AntDesign name='heart' size={20} color={colors.pl_label} />
+				<Entypo name='dots-three-vertical' size={20} color={colors.ligth} />
+			</Block>
 		</Pressable>
 	)
 }
