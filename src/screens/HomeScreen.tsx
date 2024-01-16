@@ -1,31 +1,68 @@
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { FlashList } from '@shopify/flash-list'
+import React from 'react'
+import { Dimensions } from 'react-native'
 
-import { Block, Button, Text } from '../components'
-import { useAuth } from '../context/AuthContext'
-import useTheme, { ThemeProvider } from '../hooks/useTheme'
+import { Block, Image, Text } from '../components'
+import SongItem from '../components/SongItem'
+import useFetchMusic from '../hooks/useFetchMusic'
+import useTheme from '../hooks/useTheme'
+import useMuscisContext from '../stores/hook'
 
-export default function HomeScreen({ navigation }) {
-	// Use insets for padding adjust your content in safe area
-	const insets = useSafeAreaInsets()
-	const { colors, sizes } = useTheme()
-
-	// Call to logout function to navgate to Login Screen
-	const { onLogout } = useAuth()
+const HomeScreen = () => {
+	useFetchMusic()
+	const { colors } = useTheme()
+	const {
+		state: { musicAssets },
+	} = useMuscisContext()
+	console.log(musicAssets)
 
 	return (
-		<ThemeProvider>
-			<Block
-				style={{ flex: 1, paddingTop: insets.top }}
-				alignItems='center'
-				card>
-				<Button
-					color={colors.primary}
-					center
-					ph={sizes.base}
-					onPress={onLogout}>
-					<Text color={colors.invertedText}>Go to Login</Text>
-				</Button>
+		<Block color={colors.pl_background} align='center' flex={1}>
+			<Block row alignItems='center' mt={45}>
+				<Image
+					source={require('../../assets/icons/bag.png')}
+					width={22.52}
+					height={25}
+					mh={15}
+				/>
+				<Text color={colors.pl_label} size={25} weight='600'>
+					MUSIC BAG
+				</Text>
 			</Block>
-		</ThemeProvider>
+
+			<Block mt={40} justifyContent='center' alignItems='center'>
+				<Image source={require('../../assets/images/cover.png')} />
+				<Block bottom={28} alignItems='center' position='absolute'>
+					<Text color={colors.text} size={20}>
+						SONG TITLE
+					</Text>
+					<Text color={colors.pl_label} size={12}>
+						ARTIST
+					</Text>
+				</Block>
+			</Block>
+
+			<Block
+				row
+				alignItems='center'
+				width='100%'
+				mt={50}
+				ph={40}
+				justify='space-between'>
+				<Text color={colors.pl_primary}>Cloud Song</Text>
+				<Text color={colors.pl_label}>Device Song</Text>
+			</Block>
+
+			<Block height='100%' width={Dimensions.get('screen').width}>
+				<FlashList
+					data={musicAssets}
+					keyExtractor={song => song.id}
+					estimatedItemSize={200}
+					renderItem={({ item }) => <SongItem song={item} />}
+				/>
+			</Block>
+		</Block>
 	)
 }
+
+export default HomeScreen

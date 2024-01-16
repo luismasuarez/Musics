@@ -63,7 +63,7 @@ export const COLORS = {
 	invertedText: '#252F40',
 
 	// player colors
-	pl_primari: '#FF9900',
+	pl_primary: '#FF9900',
 	pl_background: '#191B28',
 	pl_container: '#34374B',
 	pl_label: '#9E9E9E',
@@ -109,6 +109,7 @@ export const ICONS = {
 	splash: require('../../assets/icons/user'),
 	// icons
 	home: require('../../assets/icons/user'),
+	bag: require('../../assets/icons/bag'),
 }
 
 export const ASSETS = {}
@@ -128,6 +129,7 @@ export const THEME = {
 	sizes: { ...SIZES },
 	spacing: { ...SPACING },
 	assets: ASSETS,
+	icons: ICONS,
 	fonts: { ...FONTS },
 }
 

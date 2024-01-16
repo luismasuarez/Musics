@@ -6,7 +6,7 @@ import { ModalPortal } from 'react-native-modals'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import AppProviders from './src/AppProviders'
-import Player from './src/screens/Player'
+import HomeScreen from './src/screens/HomeScreen'
 import MusicsProvider from './src/stores/provider'
 
 const Stack = createNativeStackNavigator()
@@ -41,8 +41,8 @@ export const Layout = () => {
 	return (
 		<Stack.Navigator>
 			<Stack.Screen
-				name='Player'
-				component={Player}
+				name='Home'
+				component={HomeScreen}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>

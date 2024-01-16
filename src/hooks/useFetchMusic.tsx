@@ -6,13 +6,19 @@ import useMuscisContext from '../stores/hook'
 const useFetchMusic = () => {
 	const { dispatch } = useMuscisContext()
 
+	/**
+	 * Fetches music files from local storage and saves them in state.
+	 */
 	const fetchMusicFiles = async () => {
+		// Request permissions to access media library
 		await MediaLibrary.requestPermissionsAsync()
 
+		// Get all audio assets from media library
 		const media = await MediaLibrary.getAssetsAsync({
 			mediaType: MediaLibrary.MediaType.audio,
 		})
 
+		// Dispatch action to set music assets in state
 		dispatch({ type: 'SET_MUSIC_ASSETS', payload: media.assets })
 	}
 

@@ -19,6 +19,9 @@ interface IBlock extends ViewProps {
 	wrap?: ViewStyle['flexWrap']
 	width?: ViewStyle['width']
 	height?: ViewStyle['height']
+	p?: ViewStyle['padding']
+	ph?: ViewStyle['paddingHorizontal']
+	pv?: ViewStyle['paddingVertical']
 	position?: ViewStyle['position']
 	top?: ViewStyle['top']
 	right?: ViewStyle['right']
@@ -26,6 +29,7 @@ interface IBlock extends ViewProps {
 	left?: ViewStyle['left']
 	mt?: ViewStyle['marginTop']
 	mh?: ViewStyle['marginHorizontal']
+	ml?: ViewStyle['marginLeft']
 	color?: ViewStyle['backgroundColor']
 	outlined?: boolean
 	card?: boolean
@@ -45,7 +49,7 @@ interface IBlock extends ViewProps {
 const Block = ({
 	children,
 	style,
-	flex = 1,
+	flex,
 	row,
 	justify,
 	justifyContent,
@@ -56,6 +60,9 @@ const Block = ({
 	wrap,
 	width,
 	height,
+	p,
+	ph,
+	pv,
 	position,
 	top,
 	right,
@@ -63,6 +70,7 @@ const Block = ({
 	left,
 	mt,
 	mh,
+	ml,
 	color,
 	outlined,
 	card,
@@ -85,13 +93,17 @@ const Block = ({
 		wrap !== undefined && { flexWrap: wrap },
 		width !== undefined && { width },
 		height !== undefined && { height },
+		p !== undefined && { padding: p },
+		ph !== undefined && { paddingHorizontal: ph },
+		pv !== undefined && { paddingVertical: pv },
 		position !== undefined && { position },
 		top !== undefined && { top },
 		right !== undefined && { right },
 		bottom !== undefined && { bottom },
 		left !== undefined && { left },
-		mt !== undefined && { mt },
-		mh !== undefined && { mh },
+		mt !== undefined && { marginTop: mt },
+		mh !== undefined && { marginHorizontal: mh },
+		ml !== undefined && { marginLeft: ml },
 		color !== undefined && { backgroundColor: color },
 		outlined && {
 			borderWidth: 1,
