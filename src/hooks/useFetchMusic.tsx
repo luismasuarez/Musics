@@ -12,6 +12,7 @@ const useFetchMusic = () => {
 		const media = await MediaLibrary.getAssetsAsync({
 			mediaType: MediaLibrary.MediaType.audio,
 		})
+
 		dispatch({ type: 'SET_MUSIC_ASSETS', payload: media.assets })
 	}
 

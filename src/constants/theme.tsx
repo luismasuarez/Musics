@@ -61,6 +61,12 @@ export const COLORS = {
 	// text color
 	text: '#FFFFFF',
 	invertedText: '#252F40',
+
+	// player colors
+	pl_primari: '#FF9900',
+	pl_background: '#191B28',
+	pl_container: '#34374B',
+	pl_label: '#9E9E9E',
 }
 
 export const SIZES = {

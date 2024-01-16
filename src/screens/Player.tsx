@@ -6,10 +6,10 @@ import {
 	Ionicons,
 	MaterialCommunityIcons,
 } from '@expo/vector-icons'
-import { AVPlaybackStatus, Audio } from 'expo-av'
+import { Audio } from 'expo-av'
 import { Asset } from 'expo-media-library'
-import { useState } from 'react'
-import { FlatList, Pressable, ScrollView, View, StyleSheet } from 'react-native'
+import { useRef, useState } from 'react'
+import { FlatList, Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import { BottomModal, ModalContent } from 'react-native-modals'
 
 import { Block, Input, Text } from '../components'
@@ -19,19 +19,32 @@ import useFetchMusic from '../hooks/useFetchMusic'
 import useMuscisContext from '../stores/hook'
 
 const Player = () => {
+	const colors = [
+		'#27374D',
+		'#1D267D',
+		'#BE5A83',
+		'#212A3E',
+		'#917FB3',
+		'#37306B',
+		'#443C68',
+		'#5B8FB9',
+		'#144272',
+	]
 	useFetchMusic()
 	const {
 		state: { musicAssets, currentTrack },
 		dispatch,
 	} = useMuscisContext()
+
 	const [input, setInput] = useState('')
 	const [showModal, setShowModal] = useState(false)
 	const [progress, setProgress] = useState<number>(0)
 	const [currentTime, setCurrentTime] = useState(0)
 	const [totalDuration, setTotalDuration] = useState<number | undefined>(0)
-	const [currentSong, setCurrentSong] = useState<Audio.Sound | null>()
-	const [currentSound, setCurrentSound] = useState(null)
+	const value = useRef(0)
+	const [currentSound, setCurrentSound] = useState<Audio.Sound | null>(null)
 	const [isPlaying, setIsPlaying] = useState(false)
+	const [backgroundColor, setBackgroundColor] = useState('#0A2647')
 
 	const circleSize = 12
 	const formatTime = time => {
@@ -45,11 +58,11 @@ const Player = () => {
 			await currentSound.stopAsync()
 			setCurrentSound(null)
 		}
-		value.current -= 1
-		if (value.current < savedTracks.length) {
-			const nextTrack = savedTracks[value.current]
-			setCurrentTrack(nextTrack)
 
+		value.current -= 1
+		if (value.current < musicAssets.length) {
+			const nextTrack = musicAssets[value.current]
+			dispatch({ type: 'SET_CURRENT_TRACK', payload: nextTrack })
 			await play(nextTrack)
 		} else {
 			console.log('end of playlist')
@@ -67,15 +80,21 @@ const Player = () => {
 		}
 	}
 
+	const extractColors = async () => {
+		const randomIndex = Math.floor(Math.random() * colors.length)
+		const randomColor = colors[randomIndex]
+		setBackgroundColor(randomColor)
+	}
+
 	const playNextTrack = async () => {
 		if (currentSound) {
 			await currentSound.stopAsync()
 			setCurrentSound(null)
 		}
 		value.current += 1
-		if (value.current < savedTracks.length) {
-			const nextTrack = savedTracks[value.current]
-			setCurrentTrack(nextTrack)
+		if (value.current < musicAssets.length) {
+			const nextTrack = musicAssets[value.current]
+			dispatch({ type: 'SET_CURRENT_TRACK', payload: nextTrack })
 			extractColors()
 			await play(nextTrack)
 		} else {
@@ -91,9 +110,7 @@ const Player = () => {
 	}
 
 	const play = async (nextTrack: Asset) => {
-		console.log(nextTrack)
 		const preview_url = nextTrack.uri
-
 		try {
 			await Audio.setAudioModeAsync({
 				playsInSilentModeIOS: true,
@@ -110,7 +127,7 @@ const Player = () => {
 			)
 			console.log('Sound', status)
 			onPlaybackStatusUpdate(status)
-			setCurrentSong(sound)
+			setCurrentSound(sound)
 			await sound.playAsync()
 		} catch (err: unknown) {
 			console.log(err)
