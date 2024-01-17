@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 import useMuscisContext from '../stores/hook'
 
-const useFetchMusic = () => {
+const useFetchMusic = (pageSize?: number) => {
 	const { dispatch } = useMuscisContext()
 
 	/**
@@ -16,6 +16,7 @@ const useFetchMusic = () => {
 		// Get all audio assets from media library
 		const media = await MediaLibrary.getAssetsAsync({
 			mediaType: MediaLibrary.MediaType.audio,
+			first: pageSize,
 		})
 
 		// Dispatch action to set music assets in state

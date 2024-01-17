@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 interface IBlock extends ViewProps {
 	flex?: ViewStyle['flex']
+	gap?: ViewStyle['gap']
 	row?: boolean
 	justify?: ViewStyle['justifyContent']
 	justifyContent?: ViewStyle['justifyContent']
@@ -50,6 +51,7 @@ const Block = ({
 	children,
 	style,
 	flex,
+	gap,
 	row,
 	justify,
 	justifyContent,
@@ -83,6 +85,7 @@ const Block = ({
 }: IBlock) => {
 	const blockStyle = StyleSheet.flatten([
 		flex !== undefined && { flex },
+		gap !== undefined && { gap },
 		row && { flexDirection: 'row' },
 		justify !== undefined && { justifyContent: justify },
 		justifyContent !== undefined && { justifyContent },

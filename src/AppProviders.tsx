@@ -7,11 +7,11 @@ import { ThemeProvider } from './hooks/useTheme'
 const AppProviders = ({ children }) => {
 	return (
 		<AuthProvider>
-			<NavigationContainer>
-				<SafeAreaProvider>
+			<SafeAreaProvider>
+				<NavigationContainer>
 					<ThemeProvider>{children}</ThemeProvider>
-				</SafeAreaProvider>
-			</NavigationContainer>
+				</NavigationContainer>
+			</SafeAreaProvider>
 		</AuthProvider>
 	)
 }

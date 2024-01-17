@@ -8,13 +8,14 @@ import useFetchMusic from '../hooks/useFetchMusic'
 import useTheme from '../hooks/useTheme'
 import useMuscisContext from '../stores/hook'
 
-const HomeScreen = () => {
-	useFetchMusic()
+const HomeScreen = ({ navigation }) => {
+	useFetchMusic(100)
 	const { colors } = useTheme()
 	const {
 		state: { musicAssets },
 	} = useMuscisContext()
-	console.log(musicAssets)
+
+	const { navigate } = navigation
 
 	return (
 		<Block color={colors.pl_background} align='center' flex={1}>
@@ -58,7 +59,12 @@ const HomeScreen = () => {
 					data={musicAssets}
 					keyExtractor={song => song.id}
 					estimatedItemSize={200}
-					renderItem={({ item }) => <SongItem song={item} />}
+					renderItem={({ item }) => (
+						<SongItem
+							song={item}
+							onPress={() => navigate('Player', { song: item })}
+						/>
+					)}
 				/>
 			</Block>
 		</Block>
