@@ -1,25 +1,32 @@
+import { Asset } from 'expo-media-library'
 import React from 'react'
 
 import { Block, Button, Image, Text } from '../components'
-import usePlayMethods from '../hooks/usePlayMethods'
+import PlayerControls from '../components/PlayerControls'
+import SongProgress from '../components/SongProgress'
+import usePlayerMethods from '../hooks/usePlayerMethods'
 import useTheme from '../hooks/useTheme'
-import BackIocSvg from '../svg/BackIocSvg'
-import DownloadSvg from '../svg/DownloadSvg'
-import HearSvg from '../svg/HearSvg'
-import NextSongSvg from '../svg/NextSong'
-import PauseButtonSvg from '../svg/PauseButtonSvg'
-import PlayButtonSvg from '../svg/PlayButtonSvg'
-import PlaySvg from '../svg/PlaySvg'
-import PrevSongSvg from '../svg/PrevSongSvg'
-import SettingSvg from '../svg/SettingSvg'
-import VolMax from '../svg/VolMaxSvg'
-import VolMinus from '../svg/VolMinusSvg'
+import {
+	BackIocSvg,
+	DownloadSvg,
+	HearSvg,
+	PlaySvg,
+	SettingSvg,
+	VolMaxSvg,
+	VolMinusSvg,
+} from '../svg'
 
-const SongPlayer = ({ route }) => {
+const SongPlayer = ({ route, navigation }) => {
 	const { colors, sizes } = useTheme()
 	const { song } = route.params
+	const sound: Asset = song
 
-	const { handlePlayPause, isPlaying } = usePlayMethods(song)
+	const { handleUnloadSound, handlePlayPause, isPlaying } =
+		usePlayerMethods(song)
+	const handleBack = () => {
+		handleUnloadSound()
+		navigation.goBack()
+	}
 
 	return (
 		<Block
@@ -41,7 +48,12 @@ const SongPlayer = ({ route }) => {
 					justifyContent='center'
 					alignItems='center'
 					radius={8}>
-					<BackIocSvg />
+					<Button
+						alignItems='center'
+						justifyContent='center'
+						onPress={handleBack}>
+						<BackIocSvg />
+					</Button>
 				</Block>
 				<Block
 					width={32}
@@ -54,10 +66,14 @@ const SongPlayer = ({ route }) => {
 				</Block>
 			</Block>
 
-			<Block row>
-				<VolMinus />
+			<Block row alignItems='center'>
+				<Button justifyContent='center' alignItems='center'>
+					<VolMinusSvg />
+				</Button>
 				<Image source={require('../../assets/images/play_cover.png')} mt={50} />
-				<VolMax />
+				<Button justifyContent='center' alignItems='center'>
+					<VolMaxSvg />
+				</Button>
 			</Block>
 
 			<Block row alignItems='center' width='100%' ph={30} mt={100}>
@@ -76,10 +92,10 @@ const SongPlayer = ({ route }) => {
 				alignItems='flex-start'>
 				<Block>
 					<Text color={colors.text} size={sizes.h5}>
-						Song Title
+						{sound.filename}
 					</Text>
 					<Text color={colors.pl_label} size={sizes.p}>
-						Artist
+						{sound.albumId}
 					</Text>
 				</Block>
 				<Block row gap={18} alignItems='center'>
@@ -89,43 +105,15 @@ const SongPlayer = ({ route }) => {
 			</Block>
 
 			<Block width='100%' mt={110} bottom={70} justifyContent='space-between'>
-				<Block row alignItems='center' justifyContent='center'>
-					<Text color={colors.text} size={sizes.p}>
-						01:25
-					</Text>
-					<Text color={colors.text}> / </Text>
-					<Text color={colors.pl_label} size={sizes.p}>
-						01:25
-					</Text>
-				</Block>
+				<SongProgress
+					currentProgress={song.duration}
+					totalDuration={song.duration}
+				/>
 
-				<Block
-					row
-					width='100%'
-					ph={70}
-					mt={16}
-					justifyContent='space-between'
-					alignItems='center'>
-					<Button
-						justifyContent='center'
-						alignItems='center'
-						onPress={handlePlayPause}>
-						<PrevSongSvg />
-					</Button>
-					<Button
-						onPress={handlePlayPause}
-						width={55}
-						height={55}
-						radius={50}
-						color={colors.pl_primary}
-						alignItems='center'
-						justifyContent='center'>
-						{isPlaying ? <PauseButtonSvg /> : <PlayButtonSvg />}
-					</Button>
-					<Button justifyContent='center' alignItems='center'>
-						<NextSongSvg />
-					</Button>
-				</Block>
+				<PlayerControls
+					handlePlayPause={handlePlayPause}
+					isPlaying={isPlaying}
+				/>
 			</Block>
 		</Block>
 	)

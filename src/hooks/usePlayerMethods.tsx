@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import { AVPlaybackStatus, Audio } from 'expo-av'
+import { Audio } from 'expo-av'
 import { Asset } from 'expo-media-library'
 import { useEffect, useState } from 'react'
 
-const usePlayMethods = (song: Asset) => {
-	const [currentSound, setCurrentSound] = useState<Audio.Sound | undefined>()
-	const [soundStatus, setSoundStatus] = useState<AVPlaybackStatus>()
+import useMuscisContext from '../stores/hook'
+
+const usePlayerMethods = (song: Asset) => {
+	const {
+		state: { currentSound },
+		dispatch,
+	} = useMuscisContext()
 	const [isPlaying, setIsPlaying] = useState(false)
 
 	const playSound = async () => {
@@ -20,9 +24,7 @@ const usePlayMethods = (song: Asset) => {
 				// Initial state of the song
 				{ shouldPlay: true, isLooping: false },
 			)
-			setCurrentSound(sound)
-			setSoundStatus(status)
-			console.log('Playing Sound')
+			dispatch({ type: 'SET_CURRENT_SOUND', payload: sound })
 		} catch (error) {
 			console.log(error)
 		}
@@ -39,12 +41,21 @@ const usePlayMethods = (song: Asset) => {
 		}
 	}
 
+	const handleUnloadSound = async () => {
+		currentSound?.stopAsync()
+		currentSound?.unloadAsync()
+	}
+
 	useEffect(() => {
+		if (currentSound) {
+			handleUnloadSound()
+		}
 		playSound()
+		console.log('Playing Sound')
 		setIsPlaying(true)
 	}, [])
 
-	return { handlePlayPause, isPlaying }
+	return { handlePlayPause, isPlaying, handleUnloadSound }
 }
 
-export default usePlayMethods
+export default usePlayerMethods
