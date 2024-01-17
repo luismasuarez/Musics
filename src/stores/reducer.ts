@@ -22,6 +22,11 @@ export const reducer = (state: MusicsState, action: TAction) => {
 				...state,
 				currentTrack: action.payload,
 			}
+		case types.SET_CURRENT_SOUND:
+			return {
+				...state,
+				currentSound: action.payload,
+			}
 
 		default:
 			return state

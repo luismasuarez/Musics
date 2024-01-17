@@ -1,3 +1,4 @@
+import { Sound } from 'expo-av/build/Audio'
 import { Asset } from 'expo-media-library'
 
 import * as types from './types'
@@ -17,4 +18,13 @@ export type ISetCurrentTrack = {
 	payload: Asset
 }
 
-export type TAction = ISetPlayingSong | ISetMusicAssets | ISetCurrentTrack
+export type ISetCurrentSound = {
+	type: types.SET_CURRENT_SOUND
+	payload: Sound
+}
+
+export type TAction =
+	| ISetPlayingSong
+	| ISetMusicAssets
+	| ISetCurrentTrack
+	| ISetCurrentSound
