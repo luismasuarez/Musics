@@ -33,6 +33,7 @@ interface IText extends TextProps {
 	bottom?: TextStyle['bottom']
 	left?: TextStyle['left']
 	mt?: TextStyle['marginTop']
+	ml?: TextStyle['marginLeft']
 }
 
 const Text = ({
@@ -65,6 +66,7 @@ const Text = ({
 	bottom,
 	left,
 	mt,
+	ml,
 	style,
 	...props
 }: IText) => {
@@ -115,6 +117,7 @@ const Text = ({
 		bottom !== undefined && { bottom },
 		left !== undefined && { left },
 		mt !== undefined && { mt },
+		ml !== undefined && { marginLeft: ml },
 		style,
 	]) as TextStyle
 

@@ -7,6 +7,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import AppProviders from './src/AppProviders'
 import HomeScreen from './src/screens/HomeScreen'
+import SongPlayer from './src/screens/SongPlayer'
 import MusicsProvider from './src/stores/provider'
 
 const Stack = createNativeStackNavigator()
@@ -39,10 +40,15 @@ export default function App() {
 
 export const Layout = () => {
 	return (
-		<Stack.Navigator>
+		<Stack.Navigator initialRouteName='Home'>
 			<Stack.Screen
 				name='Home'
 				component={HomeScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='Player'
+				component={SongPlayer}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>

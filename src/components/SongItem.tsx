@@ -1,6 +1,6 @@
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons'
 import { Asset } from 'expo-media-library'
-import { Pressable } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 
 import Block from './Block'
 import Text from './Text'
@@ -8,12 +8,15 @@ import useTheme from '../hooks/useTheme'
 
 type TSongItemProps = {
 	song: Asset
+	onPress: () => void
 }
 
-const SongItem = ({ song }: TSongItemProps) => {
+const SongItem = ({ song, onPress }: TSongItemProps) => {
 	const { colors, sizes } = useTheme()
+
 	return (
-		<Pressable
+		<TouchableOpacity
+			onPress={onPress}
 			style={{
 				flexDirection: 'row',
 				alignItems: 'center',
@@ -55,7 +58,7 @@ const SongItem = ({ song }: TSongItemProps) => {
 				<AntDesign name='heart' size={20} color={colors.pl_label} />
 				<Entypo name='dots-three-vertical' size={20} color={colors.ligth} />
 			</Block>
-		</Pressable>
+		</TouchableOpacity>
 	)
 }
 

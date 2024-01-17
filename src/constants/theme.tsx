@@ -103,14 +103,7 @@ export const SPACING = {
 	xxl: SIZES.base * 7, // xxl: 56px
 }
 
-export const ICONS = {
-	// images
-	logo: require('../../assets/icons/user'),
-	splash: require('../../assets/icons/user'),
-	// icons
-	home: require('../../assets/icons/user'),
-	bag: require('../../assets/icons/bag'),
-}
+export const ICONS = {}
 
 export const ASSETS = {}
 
