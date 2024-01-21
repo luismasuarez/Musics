@@ -1,11 +1,9 @@
-import { Asset } from 'expo-media-library'
-import React from 'react'
-
 import { Block, Button, Image, Text } from '../components'
 import PlayerControls from '../components/PlayerControls'
 import SongProgress from '../components/SongProgress'
 import usePlayerMethods from '../hooks/usePlayerMethods'
 import useTheme from '../hooks/useTheme'
+import useMuscisContext from '../stores/hook'
 import {
 	BackIocSvg,
 	DownloadSvg,
@@ -15,18 +13,27 @@ import {
 	VolMaxSvg,
 	VolMinusSvg,
 } from '../svg'
+import { formatTime } from '../utils/formatTime'
 
-const SongPlayer = ({ route, navigation }) => {
+const SongPlayer = ({ navigation, route }) => {
 	const { colors, sizes } = useTheme()
-	const { song } = route.params
-	const sound: Asset = song
-
-	const { handleUnloadSound, handlePlayPause, isPlaying } =
-		usePlayerMethods(song)
+	const {
+		state: { currentTrack },
+	} = useMuscisContext()
+	const { track } = route.params
 	const handleBack = () => {
-		handleUnloadSound()
 		navigation.goBack()
 	}
+
+	const {
+		isPlaying,
+		handlePlayPause,
+		playNextTrack,
+		playPreviousTrack,
+		progress,
+		currentTime,
+		totalDuration,
+	} = usePlayerMethods(track)
 
 	return (
 		<Block
@@ -70,17 +77,32 @@ const SongPlayer = ({ route, navigation }) => {
 				<Button justifyContent='center' alignItems='center'>
 					<VolMinusSvg />
 				</Button>
+
 				<Image source={require('../../assets/images/play_cover.png')} mt={50} />
+
 				<Button justifyContent='center' alignItems='center'>
 					<VolMaxSvg />
 				</Button>
 			</Block>
 
-			<Block row alignItems='center' width='100%' ph={30} mt={100}>
-				<PlaySvg />
-				<Text color={colors.pl_label} ml={7}>
-					100 Plays
-				</Text>
+			<Block
+				row
+				alignItems='center'
+				justifyContent='space-between'
+				width='100%'
+				ph={30}
+				mt={100}>
+				<Block row alignItems='center'>
+					<PlaySvg />
+					<Text color={colors.pl_label} ml={7}>
+						100 Plays
+					</Text>
+				</Block>
+
+				<Block row gap={18} alignItems='center'>
+					<HearSvg />
+					<DownloadSvg />
+				</Block>
 			</Block>
 
 			<Block
@@ -90,29 +112,28 @@ const SongPlayer = ({ route, navigation }) => {
 				ph={30}
 				mt={5}
 				alignItems='flex-start'>
-				<Block>
+				<Block flex={1} pv={sizes.base}>
 					<Text color={colors.text} size={sizes.h5}>
-						{sound.filename}
+						{currentTrack?.filename}
 					</Text>
 					<Text color={colors.pl_label} size={sizes.p}>
-						{sound.albumId}
+						{currentTrack?.albumId}
 					</Text>
-				</Block>
-				<Block row gap={18} alignItems='center'>
-					<HearSvg />
-					<DownloadSvg />
 				</Block>
 			</Block>
 
 			<Block width='100%' mt={110} bottom={70} justifyContent='space-between'>
 				<SongProgress
-					currentProgress={song.duration}
-					totalDuration={song.duration}
+					progress={progress}
+					currentProgress={formatTime(currentTime)}
+					totalDuration={formatTime(totalDuration)}
 				/>
 
 				<PlayerControls
-					handlePlayPause={handlePlayPause}
 					isPlaying={isPlaying}
+					handlePlayPause={handlePlayPause}
+					next={playNextTrack}
+					prev={playPreviousTrack}
 				/>
 			</Block>
 		</Block>

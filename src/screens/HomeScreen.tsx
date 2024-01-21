@@ -9,13 +9,13 @@ import useTheme from '../hooks/useTheme'
 import useMuscisContext from '../stores/hook'
 
 const HomeScreen = ({ navigation }) => {
+	const { navigate } = navigation
 	useFetchMusic(100)
 	const { colors } = useTheme()
 	const {
 		state: { musicAssets },
+		dispatch,
 	} = useMuscisContext()
-
-	const { navigate } = navigation
 
 	return (
 		<Block color={colors.pl_background} align='center' flex={1}>
@@ -62,7 +62,10 @@ const HomeScreen = ({ navigation }) => {
 					renderItem={({ item }) => (
 						<SongItem
 							song={item}
-							onPress={() => navigate('Player', { song: item })}
+							onPress={() => {
+								dispatch({ type: 'SET_CURRENT_TRACK', payload: item })
+								navigate('Player', { track: item })
+							}}
 						/>
 					)}
 				/>
