@@ -37,12 +37,7 @@ const SongItem = ({ song, onPress }: TSongItemProps) => {
 			</Block>
 
 			<Block ml={sizes.base} flex={1}>
-				<Text
-					style={{
-						fontWeight: 'bold',
-						fontSize: sizes.p,
-						color: colors.ligth,
-					}}>
+				<Text weight='bold' size={sizes.p} color={colors.ligth}>
 					{song.filename}
 				</Text>
 			</Block>

@@ -10,10 +10,18 @@ import PrevSongSvg from '../svg/PrevSongSvg'
 
 type TControlProps = {
 	handlePlayPause?: () => Promise<void>
+	stop?: () => Promise<void>
+	next?: () => Promise<void>
+	prev?: () => Promise<void>
 	isPlaying?: boolean
 }
 
-const PlayerControls = ({ handlePlayPause, isPlaying }: TControlProps) => {
+const PlayerControls = ({
+	isPlaying,
+	handlePlayPause,
+	next,
+	prev,
+}: TControlProps) => {
 	const { colors } = useTheme()
 
 	return (
@@ -24,7 +32,7 @@ const PlayerControls = ({ handlePlayPause, isPlaying }: TControlProps) => {
 			mt={16}
 			justifyContent='space-between'
 			alignItems='center'>
-			<Button justifyContent='center' alignItems='center'>
+			<Button justifyContent='center' alignItems='center' onPress={prev}>
 				<PrevSongSvg />
 			</Button>
 			<Button
@@ -37,7 +45,7 @@ const PlayerControls = ({ handlePlayPause, isPlaying }: TControlProps) => {
 				justifyContent='center'>
 				{isPlaying ? <PauseButtonSvg /> : <PlayButtonSvg />}
 			</Button>
-			<Button justifyContent='center' alignItems='center'>
+			<Button justifyContent='center' alignItems='center' onPress={next}>
 				<NextSongSvg />
 			</Button>
 		</Block>

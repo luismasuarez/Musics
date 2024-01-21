@@ -10,17 +10,17 @@ export type ISetPlayingSong = {
 
 export type ISetMusicAssets = {
 	type: types.SET_MUSIC_ASSETS
-	payload: Asset[]
+	payload: Asset[] | []
 }
 
 export type ISetCurrentTrack = {
 	type: types.SET_CURRENT_TRACK
-	payload: Asset
+	payload: Asset | null
 }
 
 export type ISetCurrentSound = {
 	type: types.SET_CURRENT_SOUND
-	payload: Sound
+	payload: Sound | null
 }
 
 export type TAction =
